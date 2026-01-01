@@ -6,7 +6,7 @@ const Transaction = require("../models/Transaction");
 
 // Home – list projects
 router.get("/", async (req, res) => {
-  const projects = await Project.find();
+  const projects = await Project.find().sort({ createdAt: -1 });
   res.render("projects", { projects });
 });
 
@@ -19,18 +19,9 @@ router.post("/projects", async (req, res) => {
 // Project detail + summary
 router.get("/projects/:id", async (req, res) => {
   const project = await Project.findById(req.params.id);
-  let filter = { projectId: project._id };
+  if (!project) return res.redirect("/");
 
-if (req.query.month) {
-  const [year, month] = req.query.month.split("-");
-  const start = new Date(year, month - 1, 1);
-  const end = new Date(year, month, 1);
-
-  filter.date = { $gte: start, $lt: end };
-}
-
-const transactions = await Transaction.find(filter);
-
+  const transactions = await Transaction.find({ projectId: project._id });
 
   const totalReceived = transactions
     .filter(t => t.type === "RECEIVED")
@@ -49,6 +40,16 @@ const transactions = await Transaction.find(filter);
     totalSpent,
     balance
   });
+});
+
+// ❌ DELETE PROJECT (AND ITS TRANSACTIONS)
+router.post("/projects/:id/delete", async (req, res) => {
+  const projectId = req.params.id;
+
+  await Transaction.deleteMany({ projectId });
+  await Project.findByIdAndDelete(projectId);
+
+  res.redirect("/");
 });
 
 module.exports = router;
