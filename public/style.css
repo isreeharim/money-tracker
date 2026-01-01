@@ -1,0 +1,115 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+/* LIGHT THEME */
+:root {
+  --bg: #f5f6fa;
+  --card: #ffffff;
+  --text: #111;
+  --muted: #666;
+
+  --green-bg: #e9f8ef;
+  --green-text: #0a7a3d;
+
+  --red-bg: #fdeaea;
+  --red-text: #b10000;
+
+  --blue-bg: #eef3ff;
+  --blue-text: #1f3cff;
+
+  --primary: #1f3cff;
+  --danger: #ff3b30;
+}
+
+/* DARK THEME */
+body.dark {
+  --bg: #0f1115;
+  --card: #1a1d24;
+  --text: #f1f1f1;
+  --muted: #aaa;
+
+  --green-bg: #0f2a1d;
+  --green-text: #4cff9b;
+
+  --red-bg: #2a1414;
+  --red-text: #ff6b6b;
+
+  --blue-bg: #141c3a;
+  --blue-text: #8ea2ff;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 16px;
+}
+
+.header {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+
+.summary {
+  display: flex;
+  gap: 10px;
+}
+
+.summary div {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.received { background: var(--green-bg); color: var(--green-text); }
+.spent    { background: var(--red-bg);   color: var(--red-text); }
+.balance  { background: var(--blue-bg);  color: var(--blue-text); }
+
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+}
+
+button.danger {
+  background: var(--danger);
+}
+
+.tx {
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.tx:last-child {
+  border-bottom: none;
+}
+
+small {
+  color: var(--muted);
+}

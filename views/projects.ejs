@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f3cff">
+
+  <title>Money Tracker</title>
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HOME HEADER WITH DARK MODE -->
+  <div class="header" style="display:flex;justify-content:space-between;align-items:center;">
+    <span>My Projects</span>
+    <button id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+  </div>
+
+  <!-- CREATE PROJECT -->
+  <div class="card">
+    <form method="POST" action="/projects">
+      <input name="name" placeholder="New project name" required>
+      <button>Create Project</button>
+    </form>
+  </div>
+
+  <!-- PROJECT LIST -->
+  <% projects.forEach(p => { %>
+    <div class="card">
+      <a href="/projects/<%= p._id %>" style="text-decoration:none;color:inherit;">
+        <strong><%= p.name %></strong><br>
+        <small>Tap to open</small>
+      </a>
+    </div>
+  <% }) %>
+
+</div>
+
+<!-- DARK MODE SCRIPT (GLOBAL) -->
+<script>
+  const toggleBtn = document.getElementById("themeToggle");
+
+  function setTheme(theme) {
+    document.body.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+    toggleBtn.textContent = theme === "dark" ? "☀️" : "🌙";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    const isDark = document.body.classList.contains("dark");
+    setTheme(isDark ? "light" : "dark");
+  });
+
+  // Load saved or system theme
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme) {
+    setTheme(savedTheme);
+  } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    setTheme("dark");
+  }
+
+  // Register service worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js");
+  }
+</script>
+
+</body>
+</html>

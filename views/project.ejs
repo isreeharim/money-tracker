@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f3cff">
+
+
+  <title><%= project.name %></title>
+
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+
+
+<div class="container">
+
+
+  <!-- HEADER WITH BACK + DARK MODE -->
+  <div class="header" style="display:flex;align-items:center;gap:10px;">
+    
+    <!-- BACK TO HOME -->
+    <a href="/" 
+       style="text-decoration:none;font-size:18px;">⬅</a>
+
+
+    <!-- PROJECT TITLE -->
+    <span style="flex:1;"><%= project.name %></span>
+
+
+    <!-- DARK MODE TOGGLE -->
+    <button id="themeToggle">🌙</button>
+  </div>
+
+
+  <!-- SUMMARY -->
+  <div class="card summary">
+    <div class="received">
+      ₹ <%= totalReceived %><br>
+      <small>Received</small>
+    </div>
+    <div class="spent">
+      ₹ <%= totalSpent %><br>
+      <small>Spent</small>
+    </div>
+    <div class="balance">
+      ₹ <%= balance %><br>
+      <small>Balance</small>
+    </div>
+  </div>
+
+
+  <!-- ADD TRANSACTION -->
+  <div class="card">
+    <form method="POST" action="/projects/<%= project._id %>/transactions">
+      <select name="type">
+        <option value="RECEIVED">Money Received</option>
+        <option value="SPENT">Money Spent</option>
+      </select>
+
+
+      <input type="number" name="amount" placeholder="Amount" required>
+      <input name="person" placeholder="From / To">
+      <input name="purpose" placeholder="Purpose">
+      <button>Add Entry</button>
+    </form>
+  </div>
+
+
+  <!-- TRANSACTIONS -->
+  <div class="card">
+    <% transactions.forEach(t => { %>
+      <div class="tx <%= t.type === 'RECEIVED' ? 'received' : 'spent' %>">
+        <div class="tx-type">
+          <%= t.type %> – ₹ <%= t.amount %>
+        </div>
+        <small>
+          <%= t.person || "—" %> · <%= t.purpose || "—" %><br>
+          <%= t.date.toDateString() %>
+        </small>
+
+
+        <form method="POST" action="/transactions/<%= t._id %>/delete">
+          <button class="danger">Delete</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+
+
+</div>
+
+
+<!-- DARK MODE SCRIPT -->
+<script>
+  const toggleBtn = document.getElementById("themeToggle");
+
+
+  function setTheme(theme) {
+    document.body.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+    toggleBtn.textContent = theme === "dark" ? "☀️" : "🌙";
+  }
+
+
+  toggleBtn.addEventListener("click", () => {
+    const isDark = document.body.classList.contains("dark");
+    setTheme(isDark ? "light" : "dark");
+  });
+
+
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme) {
+    setTheme(savedTheme);
+  } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    setTheme("dark");
+  }
+
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js");
+  }
+</script>
+
+
+</body>
+</html>
