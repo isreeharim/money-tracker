@@ -1,45 +1,26 @@
 * {
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
 }
 
-/* LIGHT THEME */
+/* ===== COLOR SYSTEM ===== */
 :root {
-  --bg: #f5f6fa;
-  --card: #ffffff;
-  --text: #111;
-  --muted: #666;
+  --bg: #0a0f1e;
+  --card: #11172b;
+  --border: #1c2541;
 
-  --green-bg: #e9f8ef;
-  --green-text: #0a7a3d;
+  --blue: #2563eb;
+  --blue-dark: #1e40af;
 
-  --red-bg: #fdeaea;
-  --red-text: #b10000;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --danger: #ef4444;
 
-  --blue-bg: #eef3ff;
-  --blue-text: #1f3cff;
-
-  --primary: #1f3cff;
-  --danger: #ff3b30;
+  --radius-lg: 22px;
+  --radius-md: 16px;
 }
 
-/* DARK THEME */
-body.dark {
-  --bg: #0f1115;
-  --card: #1a1d24;
-  --text: #f1f1f1;
-  --muted: #aaa;
-
-  --green-bg: #0f2a1d;
-  --green-text: #4cff9b;
-
-  --red-bg: #2a1414;
-  --red-text: #ff6b6b;
-
-  --blue-bg: #141c3a;
-  --blue-text: #8ea2ff;
-}
-
+/* ===== BASE ===== */
 body {
   margin: 0;
   background: var(--bg);
@@ -47,69 +28,133 @@ body {
 }
 
 .container {
-  max-width: 420px;
+  max-width: 440px;
   margin: auto;
-  padding: 16px;
+  padding: 18px;
 }
 
+/* ===== HEADER ===== */
 .header {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.card {
-  background: var(--card);
-  border-radius: 14px;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.06);
-}
-
-.summary {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
 }
 
-.summary div {
+.header a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.header-title {
   flex: 1;
-  padding: 12px;
-  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ===== SECTION CARD ===== */
+.section {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+
+/* ===== PRIMARY BALANCE CARD ===== */
+.balance-card {
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.balance-label {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.balance-value {
+  font-size: 34px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* ===== STATS ===== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat-box {
+  background: #0b1229;
+  border-radius: var(--radius-md);
+  padding: 14px;
   text-align: center;
 }
 
-.received { background: var(--green-bg); color: var(--green-text); }
-.spent    { background: var(--red-bg);   color: var(--red-text); }
-.balance  { background: var(--blue-bg);  color: var(--blue-text); }
-
-input, select, button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-
-button {
-  background: var(--primary);
-  color: #fff;
-  border: none;
+.stat-value {
+  font-size: 15px;
   font-weight: 600;
 }
 
-button.danger {
-  background: var(--danger);
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
+/* ===== FORMS ===== */
+input,
+select {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: #0b1229;
+  color: var(--text);
+}
+
+button.primary {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--blue);
+  border: none;
+  color: white;
+  font-weight: 600;
+}
+
+/* ===== TRANSACTIONS ===== */
 .tx {
-  padding: 12px 0;
-  border-bottom: 1px solid #ddd;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .tx:last-child {
   border-bottom: none;
 }
 
-small {
+.tx-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tx-meta {
+  font-size: 12px;
   color: var(--muted);
+}
+
+button.danger {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--danger);
+  border: none;
+  color: white;
 }

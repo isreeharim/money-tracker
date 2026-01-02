@@ -3,73 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#1f3cff">
-  <title>Money Tracker</title>
-
+  <title>Projects</title>
   <link rel="stylesheet" href="/style.css">
-  <link rel="manifest" href="/manifest.json">
 </head>
 <body>
 
 <div class="container">
 
   <!-- HEADER -->
-  <div class="header" style="display:flex;justify-content:space-between;align-items:center;">
-    <span>My Projects</span>
-    <button id="themeToggle">🌙</button>
+  <div class="header">
+    <div class="header-title">My Projects</div>
   </div>
 
-  <!-- CREATE PROJECT -->
-  <div class="card">
+  <!-- CREATE PROJECT (PRIMARY CARD) -->
+  <div class="balance-card" style="margin-bottom:24px;">
+    <div class="balance-label">Create New Project</div>
+
     <form method="POST" action="/projects">
-      <input name="name" placeholder="New project name" required>
-      <button>Create Project</button>
+      <input
+        name="name"
+        placeholder="Project name"
+        required
+        style="margin-top:14px;"
+      >
+      <button class="primary" style="margin-top:16px;">
+        Create Project
+      </button>
     </form>
   </div>
 
   <!-- PROJECT LIST -->
+  <% if (projects.length === 0) { %>
+    <div class="section">
+      <div class="tx-meta">No projects yet</div>
+    </div>
+  <% } %>
+
   <% projects.forEach(p => { %>
-    <div class="card">
+    <div class="section" style="margin-bottom:16px;">
 
       <a href="/projects/<%= p._id %>" style="text-decoration:none;color:inherit;">
-        <strong><%= p.name %></strong><br>
-        <small>Tap to open</small>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="tx-title"><%= p.name %></div>
+            <div class="tx-meta">Tap to open</div>
+          </div>
+          <span style="font-size:20px;">›</span>
+        </div>
       </a>
 
       <!-- DELETE PROJECT -->
-      <form method="POST"
-            action="/projects/<%= p._id %>/delete"
-            onsubmit="return confirm('Delete this project and all its data?')">
-        <button class="danger" style="margin-top:10px;">Delete Project</button>
+      <form
+        method="POST"
+        action="/projects/<%= p._id %>/delete"
+        onsubmit="return confirm('Delete this project and all its data?')"
+      >
+        <button class="danger" style="margin-top:12px;">
+          Delete Project
+        </button>
       </form>
 
     </div>
   <% }) %>
 
 </div>
-
-<script>
-  const toggleBtn = document.getElementById("themeToggle");
-
-  function setTheme(theme) {
-    document.body.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
-    toggleBtn.textContent = theme === "dark" ? "☀️" : "🌙";
-  }
-
-  toggleBtn.addEventListener("click", () => {
-    const isDark = document.body.classList.contains("dark");
-    setTheme(isDark ? "light" : "dark");
-  });
-
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme) setTheme(savedTheme);
-  else if (window.matchMedia("(prefers-color-scheme: dark)").matches) setTheme("dark");
-
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/service-worker.js");
-  }
-</script>
 
 </body>
 </html>
